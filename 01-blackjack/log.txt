@@ -1,0 +1,5 @@
+Previous results:
+POINTS: dealer: 20 | YOU: 20 => Draw!
+POINTS: dealer: 10 | YOU: 23 => Dealer won
+POINTS: dealer: 10 | YOU: 23 => Dealer won
+POINTS: dealer: 18 | YOU: 19 => You won!
