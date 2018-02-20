@@ -3,6 +3,7 @@ const prompt = require('prompt');
 const colors = require('colors/safe');
 
 const LOG_FILE = 'log.txt';
+const FILE = process.argv[2] || LOG_FILE;
 const GOAL_POINTS = 21;
 const DEALER_MINIMAL_POINTS = 17;
 const YES = 'yes';
@@ -165,7 +166,7 @@ makeTurn = () => {
         resultMessage = 'Draw!';
       }
       console.log(resultMessage);
-      fs.appendFile(LOG_FILE, `${points} => ${resultMessage}\n`, (err) => {
+      fs.appendFile(FILE, `${points} => ${resultMessage}\n`, (err) => {
         if (err) throw err;
         console.log('Saved to log file');
       });
@@ -180,7 +181,7 @@ play = (numOfDecks, cards) => {
    dealerDeck = [];
    playerDeck = [];
    // print log file
-   fs.readFile(LOG_FILE, 'utf8', (err, data) => {
+   fs.readFile(FILE, 'utf8', (err, data) => {
      console.log(data);
      // start dialog
      promptQuestion(START_GAME, (yes) => {
