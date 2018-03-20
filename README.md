@@ -2,7 +2,7 @@
 
 ## Homework#2. REST API.
 
-The initial data were taken from JSONPlaceholder service.
+The initial data were taken from **JSONPlaceholder** service.
 
 ### To run:
 ```
