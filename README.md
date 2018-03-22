@@ -4,6 +4,9 @@
 
 The initial data were taken from **JSONPlaceholder** service.
 
+All POST requests require Bearer token (you'll get it after login/sigup);
+All GET requests are NOT required access_token.
+
 ### To run:
 ```
 npm start

@@ -1,5 +1,7 @@
-module.exports = (app, PostModel) => {
+const expressJwt = require('express-jwt');
+const authenticate = expressJwt({secret : 'server secret'});
 
+module.exports = (app, PostModel) => {
 
   app.get('/posts/:id', (req, res) => {
     const { id } = req.params;
@@ -14,7 +16,7 @@ module.exports = (app, PostModel) => {
   app.get('/posts', (req, res) => {
     if (req.query['userId']) {
       PostModel.findPostByUserId(req.query['userId'], (err, posts) => {
-        if (err)  console.error(err);
+        if (err)  res.send('Authorization error');
         else {
           res.send(posts);
         }
@@ -29,7 +31,7 @@ module.exports = (app, PostModel) => {
     }
   });
 
-  app.post('/posts/new', (req, res) => {
+  app.post('/posts/new', authenticate,  (req, res) => {
     const post = new PostModel(req.body);
     post.save((err, post) => {
       if (err)  console.error(err);
@@ -41,7 +43,7 @@ module.exports = (app, PostModel) => {
     });
   });
 
-  app.post('/posts/update', (req, res) => {
+  app.post('/posts/update', authenticate, (req, res) => {
     const { id } = req.body;
     if (id) {
       PostModel.findOneAndUpdate(

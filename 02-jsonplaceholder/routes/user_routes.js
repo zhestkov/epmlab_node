@@ -1,3 +1,6 @@
+const expressJwt = require('express-jwt');
+const authenticate = expressJwt({secret : 'server secret'});
+
 module.exports = (app, UserModel) => {
 
   app.get('/users/:id', (req, res) => {
@@ -22,7 +25,7 @@ module.exports = (app, UserModel) => {
     }
   });
 
-  app.post('/users/new', (req, res) => {
+  app.post('/users/new', authenticate, (req, res) => {
     const user = new UserModel(req.body);
     user.save((err, user) => {
       if (err)  console.error(err);
@@ -32,7 +35,7 @@ module.exports = (app, UserModel) => {
     });
   });
 
-  app.post('/users/update', (req, res) => {
+  app.post('/users/update', authenticate, (req, res) => {
     const { id } = req.body;
     if (id) {
       UserModel.findOneAndUpdate(
@@ -51,7 +54,7 @@ module.exports = (app, UserModel) => {
     }
   });
 
-  app.post('/users/remove', (req, res) => {
+  app.post('/users/remove', authenticate, (req, res) => {
     const { id } = req.body;
     if (id) {
       UserModel.findOneAndRemove({id}, (err, user) => {

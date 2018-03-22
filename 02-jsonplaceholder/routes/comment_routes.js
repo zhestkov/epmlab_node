@@ -1,3 +1,6 @@
+const expressJwt = require('express-jwt');
+const authenticate = expressJwt({secret : 'server secret'});
+
 module.exports = (app, CommentModel) => {
 
   app.get('/comments/:id', (req, res) => {
@@ -26,7 +29,7 @@ module.exports = (app, CommentModel) => {
     }
   });
 
-  app.post('/comments/new', (req, res) => {
+  app.post('/comments/new', authenticate, (req, res) => {
     const comment = new CommentModel(req.body);
     comment.save((err, comment) => {
       if (err)  console.error(err);
@@ -38,7 +41,7 @@ module.exports = (app, CommentModel) => {
     });
   });
 
-  app.post('/comments/update', (req, res) => {
+  app.post('/comments/update', authenticate, (req, res) => {
     const { id } = req.body;
     if (id) {
       CommentModel.findOneAndUpdate(
@@ -57,7 +60,7 @@ module.exports = (app, CommentModel) => {
     }
   });
 
-  app.post('/comments/remove', (req, res) => {
+  app.post('/comments/remove', authenticate, (req, res) => {
     const { id } = req.body;
     if (id) {
       CommentModel.findOneAndRemove({id}, (err, comment) => {

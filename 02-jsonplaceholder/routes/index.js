@@ -1,15 +1,21 @@
 const userRoutes = require('./user_routes');
 const postRoutes = require('./post_routes');
 const commentRoutes = require('./comment_routes');
+const adminRoutes = require('./admin_routes');
+const pages = require('../config/constants');
+const PORT = require('../config').PORT;
+module.exports = (app, models, passport) => {
+  const { UserModel, PostModel, CommentModel, AdminModel } = models;
+  userRoutes(app, UserModel, passport);
+  postRoutes(app, PostModel, passport);
+  commentRoutes(app, CommentModel, passport);
+  adminRoutes(app, AdminModel, passport);
 
-module.exports = (app, models) => {
-  const { UserModel, PostModel, CommentModel } = models;
-  userRoutes(app, UserModel);
-  postRoutes(app, PostModel);
-  commentRoutes(app, CommentModel);
   (function root(app) {
     app.get('/', (req, res) => {
-      res.send('Welcome to mainpage!');
+      req.query['access_token'] ? res.send(pages.mainAfterAuth) :
+      res.send(pages.mainBeforeAuth);
+
     });
   })(app);
 }

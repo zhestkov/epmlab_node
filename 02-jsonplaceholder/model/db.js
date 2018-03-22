@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const models = require('./index');
-const { CommentModel, PostModel, UserModel } = models;
-
-let _Model = null;
+const credentials = require('../config').credentials;
+const { CommentModel, PostModel, UserModel, AdminModel } = models;
 
 const initDB = (db_uri, users, posts, comments) => {
   mongoose.connect(db_uri);
@@ -10,6 +9,13 @@ const initDB = (db_uri, users, posts, comments) => {
   db.on('error', console.error.bind(console, 'connection error:'));
   db.once('open', () => {
     console.log('CONNECTED to DATABASE');
+    // create Admin
+    const admin = new AdminModel(credentials);
+    admin.save((err, admin) => {
+      err? console.error(err) : console.log('Admin crendentials have been saved. See config/index.js file');
+    });
+
+
     UserModel.insertMany(users, (err, users) => {
       if (err)  console.error(err);
       else {
